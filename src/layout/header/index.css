@@ -1,0 +1,11 @@
+svg.dynamic-stroke:hover > path {
+  stroke-dasharray: var(--l);
+  stroke-dashoffset: var(--l);
+  animation: stroke 1.5s ease forwards;
+}
+
+@keyframes stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
