@@ -1,21 +1,10 @@
-import './index.css'
-import { useEffect, useRef } from 'react'
+import useDynamicStrokeLength from 'src/hooks/useDynamicStrokeLength'
 
 export default function Header() {
-  const ref = useRef<SVGSVGElement>(null)
-
-  useEffect(() => {
-    const svgElement = ref.current
-    if (svgElement) {
-      const allPaths = svgElement.querySelectorAll('path')
-      allPaths.forEach((p) =>
-        p.style.setProperty('--l', `${p.getTotalLength() + 1}`)
-      )
-    }
-  })
+  const ref = useDynamicStrokeLength<SVGSVGElement>()
 
   return (
-    <header className="sticky top-0 z-[100] h-10 border-b-2 border-slate-700 bg-black">
+    <header className="sticky top-0 z-[100] h-10 border-b border-slate-700 bg-black">
       <div className="h-full w-fit flex items-center ml-2">
         <svg
           ref={ref}
@@ -24,7 +13,7 @@ export default function Header() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="dynamic-stroke size-6"
+          className="size-6"
         >
           <path
             strokeLinecap="round"

@@ -3,7 +3,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Header from './layout/header'
 import Body from './layout/body'
-import Footer from './layout/footer'
+// import Footer from './layout/footer'
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           </a>
         </div>
       </Body>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </>
   )
 }

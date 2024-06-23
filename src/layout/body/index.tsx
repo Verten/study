@@ -4,7 +4,7 @@ import ChatMenu from 'src/components/menu'
 
 export default function Body({ children }: PropsWithChildren) {
   return (
-    <div className="w-full h-full px-2">
+    <div className="w-full h-full">
       <main className="h-full flex">
         <ChatMenu />
         {children}
