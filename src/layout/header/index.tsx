@@ -4,7 +4,7 @@ export default function Header() {
   const ref = useDynamicStrokeLength<SVGSVGElement>()
 
   return (
-    <header className="sticky top-0 z-[100] h-10 border-b border-slate-700 bg-black">
+    <header className="sticky top-0 z-[100] h-10 border-b border-slate-700 bg-black text-slate-50">
       <div className="h-full w-fit flex items-center ml-2">
         <svg
           ref={ref}
@@ -13,7 +13,7 @@ export default function Header() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-6"
+          className="size-6 "
         >
           <path
             strokeLinecap="round"

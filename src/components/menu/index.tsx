@@ -30,7 +30,7 @@ export default function ChatMenu() {
   }
 
   return (
-    <div className="w-24 h-full px-2 py-2 bg-black flex flex-col">
+    <div className="w-24 h-full px-2 py-2 bg-black flex flex-col text-slate-50">
       <ul className="flex-1">
         <li className="mt-5">
           <div className="flex justify-center">
