@@ -5,6 +5,7 @@ import { MenuType } from 'src/types'
 export default function ChatMenu() {
   const navigate = useNavigate()
   //
+  const robotRef = useDynamicStrokeLength<SVGSVGElement>()
   const chatRef = useDynamicStrokeLength<SVGSVGElement>()
   const friendRef = useDynamicStrokeLength<SVGSVGElement>()
   const groupRef = useDynamicStrokeLength<SVGSVGElement>()
@@ -12,6 +13,9 @@ export default function ChatMenu() {
 
   const handleRouterAction = (menuType: MenuType): void => {
     switch (menuType) {
+      case MenuType.ROBOT:
+        navigate('/robot')
+        break
       case MenuType.CHAT:
         navigate('/chat')
         break
@@ -32,6 +36,26 @@ export default function ChatMenu() {
   return (
     <div className="w-24 h-full px-2 py-2 bg-black flex flex-col text-slate-50">
       <ul className="flex-1">
+        <li className="flex-1">
+          <div className="flex justify-center">
+            <svg
+              ref={robotRef}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-10 hover:text-sky-600"
+              onClick={() => handleRouterAction(MenuType.ROBOT)}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"
+              />
+            </svg>
+          </div>
+        </li>
         <li className="mt-5">
           <div className="flex justify-center">
             <svg
