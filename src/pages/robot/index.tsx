@@ -1,9 +1,9 @@
 import { Textarea } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ChatMessage from 'src/components/chat-message'
 import { llm, createPromptFromMessage } from 'src/langchain/llm'
 import { RobotChatMessage } from 'src/models/robot-chat'
-import { JsonOutputParser } from '@langchain/core/output_parsers'
+import { StringOutputParser } from '@langchain/core/output_parsers'
 import {
   RunnableConfig,
   RunnablePassthrough,
@@ -20,9 +20,10 @@ const CHAT_PROMPT_MESSAGE = `
   capable of discussing topics ranging from astronomy to geography. 
   You are skilled at answering questions clearly and effectively.
 
-  Please answer below user question, and respond with a valid JSON object, containing one field: "answer". Do not wrap the JSON output in markdown blocks.
+  Please answer below user question.
 `
-const parser = new JsonOutputParser<{ answer: string }>()
+// const parser = new JsonOutputParser<{ answer: string }>()
+const parser = new StringOutputParser()
 const runnable = RunnableSequence.from<{
   user_input: string
   chat_history: BaseMessage[]
@@ -34,11 +35,12 @@ const runnable = RunnableSequence.from<{
   createPromptFromMessage(CHAT_PROMPT_MESSAGE),
   llm,
   parser,
-]).bind({
-  response_format: {
-    type: 'json_object',
-  },
-} as unknown as never)
+])
+// .bind({
+//   response_format: {
+//     type: 'json_object',
+//   },
+// } as unknown as never)
 
 const chain = new RunnableWithMessageHistory({
   runnable,
@@ -59,6 +61,8 @@ export default function RobotChat() {
   const [chatConfig, setChatConfig] = useState<RunnableConfig>({
     configurable: { sessionId: 'initial' },
   })
+  // Ref to scroll to the latest message
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const handleUserInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { currentTarget } = e
@@ -98,11 +102,15 @@ export default function RobotChat() {
     messageList.push(currentResponse)
     for await (const s of responseStream) {
       currentResponse = messageList.splice(-1, 1)[0]
-      currentResponse.message = s.answer
+      currentResponse.message += s
       messageList.push(currentResponse)
       setMessageList([...messageList])
     }
   }
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messageList])
 
   const renderMessageList = (messageList: RobotChatMessage[]): JSX.Element => {
     return (
@@ -119,11 +127,12 @@ export default function RobotChat() {
   }
 
   return (
-    <div className="h-full w-full relative">
-      <div className="flex flex-col overflow-y-auto p-4">
+    <div className="flex h-full w-full flex-col items-center">
+      <div className="flex flex-1 flex-col overflow-y-auto px-4 pt-4 mb-4 w-full">
         {renderMessageList(messageList)}
+        <div ref={messagesEndRef} />
       </div>
-      <div className="absolute bottom-2 left-12 right-12">
+      <div className="w-5/6 mb-2">
         <Textarea
           value={userInput}
           onChange={handleUserInput}
